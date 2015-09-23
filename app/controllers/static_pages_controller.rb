@@ -4,4 +4,8 @@ class StaticPagesController < ApplicationController
 
   def redirect
   end
+  
+  def get_token
+    token = params[:token]
+  end 
 end

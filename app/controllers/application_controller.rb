@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   def handle_cookies 
     if cookies[:token].nil?
       redirect_to "https://www.baidu.com", status: 302
+      #redirect_to "https://www.haohao.com/index.php?r=me.com/get_token?t=xxxx"
       # 展示重定向页面
 
     # has token, sent to vertify   
@@ -32,6 +33,14 @@ class ApplicationController < ActionController::Base
     response = http.request(request)
     response.body 
   end
+
+  def get_token
+    token = params[:token]
+    url = "www.baidu.com"
+    json = send_to_vertify(token, url)
+  end
+
+
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
