@@ -6,7 +6,11 @@
         <ul class="nav pull-right">
           <li><%= link_to "Home",    root_path %></li>
           <li><%= link_to "Redirect",    redirect_path %></li>
-          <li><%= link_to "Sign in", '#' %></li>
+          <% if @current_user %>
+            <li><%= @current_user[:name] %></li>
+          <% else %>
+            <li><%= link_to "Sign in", '#' %></li>
+          <% end %>
         </ul>
       </nav>
     </div>
