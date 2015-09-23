@@ -3,7 +3,7 @@ require 'httpclient'
 
 class StaticPagesController < ApplicationController
   before_filter :set_current_user
-  before_filter :handle_cookies, except: [:get_token]
+  before_filter :handle_cookies, except: [:token]
 
   def home
   end
@@ -16,19 +16,18 @@ class StaticPagesController < ApplicationController
   end
 
   def handle_cookies 
-    if cookies[:sb_token].nil?
+    if !cookies[:sso_token].nil?
       redirect_to "https://www.baidu.com"
-      #redirect_to "https://www.haohao.com/index.php?r=me.com/get_token?t=xxxx"
+      #redirect_to "https://www.haohao.com/index.php?r=me.com/token?token=xxxx"
       # 展示重定向页面
 
     # has token, sent to vertify   
     else
-      token = cookies[:sb_token]
-      url = "https://baidu.com?token=#{token}"
+      t = cookies[:sso_token]
+      url = "https://baidu.com?token=#{t}"
       json = send_to_vertify(url)
       if json[:status] == true
-        # 展示页面，写cookie
-        cookies[:sb_token] = json[:token]
+        # 展示页面
       else
         redirect_to "https://www.baidu.com"
       end
@@ -39,15 +38,17 @@ class StaticPagesController < ApplicationController
     http = HTTPClient.new
     response = http.get(url)
     #response.body 
-    {name: "abc", id: 123}
+    {name: "Felix", id: 123}
   end
 
-  def get_token
-    token = params[:token]
-    url = "https://www.baidu.com?token=#{token}"
-    @json = send_to_vertify(url)
-    @current_user = { name: "cool", id: 2 }
+  def token
+    t = params[:token]
+    url = "https://www.baidu.com?token=#{t}"
+    json = send_to_vertify(url)
+    #@current_user = json[:user_data]
+    @current_user = { name: "Felix", id: 2 }
     session[:current_user] = @current_user
+    cookies[:sso_token] = t
     render
   end
 

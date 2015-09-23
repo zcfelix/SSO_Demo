@@ -1,7 +1,7 @@
 Demo::Application.routes.draw do
   root to: 'static_pages#home'
   match '/redirect', to: 'static_pages#redirect', via: 'get'
-  match '/get_token', to: 'static_pages#get_token', via: 'get'
+  match '/token', to: 'static_pages#token', via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
